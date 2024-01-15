@@ -14,6 +14,22 @@ class PhoneBook extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts?.length) {
+      this.setState({
+        contacts,
+      });
+    }
+  }
+
+  componentDidUpdate(perevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   isDublicate({ name, phone }) {
     const normalizedName = name.toLowerCase();
     const normalizedPhone = phone.toLowerCase();
